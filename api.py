@@ -1,19 +1,21 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 from database import async_session, init_db
-from sqlmodel import Session
-from models import User, ImageUpload, PredictionResult
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from api import FastAPI, Depends
 
 app = FastAPI()
+
 
 # Dependency to get the database session
 def get_session() -> AsyncSession:
     return async_session()
 
+
 # Initialize the database (create tables)
 @app.on_event("startup")
 async def on_startup():
     await init_db()
+
 
 # Example endpoint to get users
 @app.get("/users/")
